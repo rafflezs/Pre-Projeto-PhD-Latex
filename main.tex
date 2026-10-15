@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuges,brazil]{babel}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{setspace}          % para a distância entre linhas
+\usepackage{tikz}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{decorations.markings}
+% Faz referência ABNT
+\usepackage[alf,abnt-etal-cite=1,abnt-etal-list=5,abnt-and-type=e]{cfg/abntcite}
+
+\newcounter{matriz}
+\newenvironment{matriz}{\refstepcounter{matriz}\equation}{\tag{M\thematriz}\endequation}
+
+\usepackage[Conny]{fncychap}
+
+% Pacotes de imagens e termos matemáticos
+\usepackage{color}
+\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{tabela-simbolos}
+%\usepackage{verbatim}
+
+%\usepackage{natbib}
+%\usepackage[square]{natbib}
+%\bibliographystyle{apalike2}
+
+\usepackage{url}
+
+\newtheorem{teo}{Teorema}
+\newtheorem{defi}{Definição}
+
+
+
+
+%Pacote para a escrita de algoritmos
+% \usepackage[portuguese]{algorithm2e}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\newenvironment{myitemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}
+{\end{itemize}
+}
+
+
+\begin{document}
+
+\title{PROPOSTA DE PROJETO DE PESQUISA DE DOUTORADO \\[1em]
+Otimização multiobjetivo consciente de ontologia para poda e aprendizado ativo de subgrafos em redes neurais de grafos}
+
+\author{Thiago Rafael Mariotti Claudio\\
+Orientadora: Roseli Aparecida Francelin Romero
+%Coorientadora: <nome completo>
+}
+
+\date{Outubro de 2026}
+\maketitle
+%\noindent
+
+\noindent 
+
+---
+
+%\vspace{0.1cm}
+%\noindent\textit{Palavras-chave:}
+%Dimensionamento de loter;
+%Otimização Linear Inteira;
+%Planejamento hospitalar.
+
+%\includegraphics[width=60mm]{picsme.png}
+
+%Projeto vigente de 03/2016 a 02/2017.
+\include{tex/introducao}
+\include{tex/proposta}
+\include{tex/objetivos}
+\include{tex/cronograma}
+
+\renewcommand{\refname}{Referências Bibliográficas}
+\bibliographystyle{cfg/abnt-alf}
+\bibliography{cfg/abnt-options,bib/ref}
+
+\end{document}
+

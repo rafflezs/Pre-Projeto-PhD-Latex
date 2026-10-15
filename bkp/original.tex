@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuges,brazil]{babel}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{setspace}          % para a distância entre linhas
+\usepackage{tikz}
+\usepackage{longtable}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{decorations.markings}
+% Faz referência ABNT
+\usepackage[alf,abnt-etal-cite=1,abnt-etal-list=5,abnt-and-type=e]{cfg/abntcite}
+
+\newcounter{matriz}
+\newenvironment{matriz}{\refstepcounter{matriz}\equation}{\tag{M\thematriz}\endequation}
+
+\usepackage[Conny]{fncychap}
+
+% Pacotes de imagens e termos matemáticos
+\usepackage{color}
+\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{tabela-simbolos}
+%\usepackage{verbatim}
+
+%\usepackage{natbib}
+%\usepackage[square]{natbib}
+%\bibliographystyle{apalike2}
+
+\usepackage{url}
+
+\newtheorem{teo}{Teorema}
+\newtheorem{defi}{Definição}
+
+
+
+
+%Pacote para a escrita de algoritmos
+% \usepackage[portuguese]{algorithm2e}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\newenvironment{myitemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}
+{\end{itemize}
+}
+
+
+\begin{document}
+
+\title{PROJETO DE PESQUISA DE DOUTORADO \\[1em]
+Métodos de Aprendizado de Máquina Aplicada para Auxílio na Gestão Operacional Médica}
+
+\author{Thiago Rafael Mariotti Claudio - Número USP: 15611674 \\
+Orientadora: Roseli Aparecida Francelin Romero - SCC/ICMC/USP
+%Coorientadora: 
+}
+
+\date{Dezembro de 2025}
+\maketitle
+%\noindent
+
+\noindent 
+
+O objetivo deste projeto de doutorado é estudar o problema de produção e roteamento de itens (produtos) aos clientes  visando o atendimento da demanda. Os problemas de produção e roteamento integram os problemas de planejamento da produção e roteamento de veículos (PRP). Ao resolver o PRP tenta-se  otimizar de maneira integrada as decisões de produção, controle de estoque, distribuição e roteamento de veículos. Neste tipo de problema, em cada período, um único ou múltiplos itens são produzidos e distribuídos para os consumidores visando atender uma determinada demanda destes itens a um custo total mínimo. Para tratar o problema, na parte inicial do projeto serão pesquisadas heurísticas baseadas em decomposição e melhoria. Estas heurísticas ou ideias contidas nelas serão utilizadas para desenvolver heurísticas híbridas, denominadas \textit{Matheuristics}. As heurísticas híbridas combinam heurísticas baseadas em modelagem matemática com métodos meta-heurísticos.  
+Instâncias disponíveis na literatura serão utilizados nos testes computacionais dos métodos propostos. 
+
+%\vspace{0.1cm}
+%\noindent\textit{Palavras-chave:}
+%Dimensionamento de loter;
+%Otimização Linear Inteira;
+%Planejamento hospitalar.
+
+%\includegraphics[width=60mm]{picsme.png}
+
+%Projeto vigente de 03/2016 a 02/2017.
+
+\section{Introdução}\label{sec:02}
+
+Em um problema integrado de produção e roteamento deve-se decidir, em uma planta (ou mais plantas) produtiva, a produção dos itens, em cada período e seus correspondentes lotes. Caso ocorra produção, um custo fixo de preparação para a produção é considerado bem como o custo de produção. Neste tipo de problema, considera-se que a capacidade de produção da planta é limitada.  A distribuição dos produtos da planta aos consumidores é realizada por um número limitado de veículos e os custos das rotas são considerados. A frota pode ser homogênea ou heterogênea. Se o produto é armazenado na planta ou no consumidor, custos de estoques também devem ser considerados. Em resumo, o objetivo é minimizar os custos de produção
+ e estoque da planta, custos de estoque dos consumidores e custos de distribuição. Revisões sobre problemas integrados podem ser encontradas em 
+\citeonline{sarmiento} e \citeonline{jansdistribuicao}. \citeonline{jansdistribuicao} citam o crescente interesse dos pesquisadores da área de pesquisa operacional para tratar estas integrações devido aos desafios relacionados a resolução destes e pelas reduções dos custos das cadeias produtivas devido a estas integrações. 
+
+Por ser um problema que integra dois importantes problemas de difícil solução, poucos métodos exatos foram propostos para resolver o problema. 
+Algumas abordagens nesta direção aplicam relaxação Lagrangiana ( \citeonline{FumeroV99}),\textit{ branch-and-cut} (\citeonline{Archetti20111731}, \citeonline{rafjansinforms} e \citeonline{suraltecnico}) e  \textit{branch-and-price} (\citeonline{Bard20102202}).
+Devido a sua complexidade, várias abordagens heurísticas foram propostas. \citeonline{Armentano20111199} utilizaram busca tabu com \textit{path relinking}, \citeonline{viniciusITOR} e \citeonline{bard2009} desenvolveram uma busca tabu,  \citeonline{Boudia20073402} proporam um GRASP para o problema com um único item, \citeonline{Boudia2009703} desenvolveram um algoritmo memético,  \citeonline{Adulyasak} um ALNS (\textit{ Adaptive Large Neighborhood Search}), \citeonline{Bard2009713} uma heurística baseada em geração de colunas, \citeonline{Absi2013ab} uma heurística iterativa.  A seguir são apresentados brevemente alguns destes trabalhos. 
+
+No trabalho de \citeonline{jansdistribuicao} dois modelos matemáticos foram apresentados para o problema PRP com um único item e frotas homogêneas. Os autores discutem também várias maneiras de tratar as restrições que eliminam as sub-rotas em problemas de roteamento de veículos e inserção delas nos modelos apresentados. Apresentam uma revisão das abordagens de solução classificando-os em abordagens baseadas em decomposição, algoritmos exatos e metaheurísticas.
+
+\citeonline{Armentano20111199} consideram a produção de múltiplos itens em uma única planta e frotas homogêneas. Duas busca tabu foram propostas, com e sem \textit{path relinking}. Geraram instâncias pequenas, isto é, com poucas variáveis e restrições, para comparar as soluções dos métodos propostos com as soluções exatas e testou instâncias propostas por \citeonline{Boudia20073402}. As soluções obtidas foram comparadas com as obtidas por métodos da literatura e obteve resultados melhores.
+
+\citeonline{Absi2013ab} consideram produção de apenas um item em uma única planta e frotas homogêneas. Apresentam variações de uma heurística iterativa que funciona em duas fases. Na primeira, a heurística planeja quanto produzir e entregar para cada cliente, assim como em que períodos realizar essas tarefas. Na segunda, decide a rota que cada veículo percorrerá. Essas fases são realizadas repetidamente até atingir um critério de parada. Nos testes computacionais considerou as instâncias utilizadas em \citeonline{Archetti20111731} e obteve resultados bons.
+
+\citeonline{Adulyasak} também consideram produção de apenas um item em uma única planta e frotas homogêneas. O método proposto é a heurística ANLS (Adaptative Large Neighborhood Search) que também divide o problema em vários subproblemas. Primeiro  geram várias soluções iniciais, depois verificam a factibilidade dessas e aplicam uma busca local em cada uma das soluções factíveis (ANLS). Resolvem instâncias geradas em \citeonline{Archetti20111731} e \citeonline{Boudiadados2005}, comparando com outros métodos utilizados anteriormente. Obtém soluções melhores do que as conhecidas em vários casos e é, em média, melhor que todas as outras. Recentemente, \citeonline{MANOUSAKIS2021} proporam uma nova formulação matemática para o problema, com um único item, e uma heurística de duas fases. Os resultados obtidos neste novo artigo, superaram os resultados da literatura conhecida para um único item. Considerando ainda o problema com um único item, \citeonline{luizfernando2021} desenvolveram um algoritmo memético, no qual considera diversos operadores e dados da literatura. Os resultados obtidos neste algoritmo memético foram superiores aos obtidos por um solver de otimização. 
+
+Neste doutorado o problema de produção e distribuição será abordado por meio de métodos heurísticos baseados na modelagem matemática. A modelagem matemática do problema deve ser investigada utilizando os trabalhos de \citeonline{MANOUSAKIS2021} \citeonline{jansdistribuicao}, \citeonline{Armentano20111199}, \citeonline{Bard2009713} e \citeonline{FumeroV99} como referências. Em \citeonline{luizfernando2021} lidam com o problema com único item, porém, a proposta é considerar o problema com múltiplos itens. Assim, neste doutorado, será considerada a modelagem e dados propostos na extensão do trabalho de \citeonline{luizfernando2021} para testar as heurísticas desenvolvidas ao longo do doutorado.  Cabe ainda destacar que será considerada a existência de uma única planta que produz vários tipos de produtos e com capacidade limitada de produção. Na literatura, poucos trabalhos consideram a produção de múltiplos itens, sendo que na literatura, apenas os trabalhos de \citeonline{Armentano20111199} e \citeonline{viniciusITOR} consideram esta característica. Os produtos são distribuídos para os consumidores utilizando uma frota limitada de veículos iguais,  sendo que a rota entre o fornecedor e o consumidor deve ser determinada. Nos trabalhos de \citeonline{Armentano20111199} e \citeonline{viniciusITOR} consideram que o cliente apenas pode ser atendido por um veículo, em cada período de tempo. Neste doutorado, será analisada a possibilidade da demanda ser particionada, como em \citeonline{FumeroV99}. Os produtos podem ser armazenados tanto no fornecedor quanto no consumidor.  Para tratar este problema serão utilizadas heurísticas baseadas em decomposição do problema e em procedimentos de melhoria. Estas heurísticas ou ideias contidas nelas serão utilizadas para desenvolver heurísticas híbridas, denominadas math-heurísticas. As heurísticas híbridas combinam heurísticas baseadas na modelagem matemática com métodos meta-heurísticos. 
+
+\section{Métodos de Solução}\label{sec:03}
+
+Existem várias abordagens de solução para problemas inteiros propostos na literatura. As abordagens de solução exata são na sua grande maioria baseadas em métodos clássicos mundialmente conhecidos, tais como: \textit{branch-and-bound, branch-and-price, branch-and-cut} (\citeonline{nemhauser1999}). Algumas destas abordagens foram utilizadas para a resolução do problema de planejamento da produção e roteamento (\citeonline{Archetti20111731} e \citeonline{Bard20102202}). 
+
+
+Devido à dificuldade de resolução de alguns problemas de programação inteira de grande porte por meio de métodos ótimos, encontra-se na literatura diversos métodos heurísticos de solução para tais problemas. Uma grande maioria deles são baseados na formulação matemática do problema. Dentre estes métodos estão as heurísticas \textit{relax-and-fix} (relaxa e fixa) e\textit{ LP-and-Fix} \citeonline{PochetWolsey2006}. 
+ 
+Uma heurística do tipo \textit{relax-and-fix} consiste em relaxar algumas variáveis de decisão, as quais são inteiras, enquanto fixa outras iterativamente, resolvendo os subproblemas inteiros mistos até que o problema original esteja resolvido \citeonline{MerceFontan2003}. Existem várias maneiras de particionar o conjunto de variáveis inteiras para aplicar este tipo de heurística dependendo, na maioria das vezes, da estrutura do problema em estudo. Neste projeto gostaríamos de investigar a aplicação deste tipo de abordagem de solução para o problema PRP. Uma abordagem de decomposição usual é decompor o problema em dois subproblemas, o problema da produção e o problema da distribuição. 
+ 
+  Outra heurística baseada em programação matemática é a \textit{fix-and-optimize} (fixa e otimiza) que a partir de uma solução incumbente, libera um conjunto de variáveis inteiras para serem otimizadas. A heurística se baseia no particionamento do conjunto de variáveis inteiras em subconjuntos disjuntos, com o intuito de reduzir o número de variáveis que serão otimizadas. Assim, a cada passo da heurística, uma partição será considerada "livre" para ser otimizada (variáveis consideradas binárias) e as demais são fixadas \citeonline{Sahling2009}. Acreditamos que este procedimento pode ser facilmente aplicado ao problema proposto. 
+  
+Heurísticas baseadas em arredondamento são amplamente aplicadas a problemas inteiros mistos. Estas heurísticas podem ser utilizadas para obtenção de soluções iniciais que pode ser utilizado em um processo de melhoria como no procedimento  \textit{fix-and-optimize}. Heurísticas de arredondamento foram propostas para problemas inteiros mistos como as de \citeonline{raey}, \citeonline{raey2012}, \citeonline{Vassilev1991203} e \citeonline{genova2011}.   
+  
+Abordagens que utilizam meta-heurísticas tais como algoritmo genético, busca tabu, \textit{simulated annealing} e outras, tem sido amplamente utilizadas na literatura para resolução de problemas inteiros. Veja \citeonline{talbi2009}  para maiores detalhes sobre estas meta-heurísticas. Atualmente, bons métodos de solução estão sendo propostos ao combinar métodos heurísticos, meta-heurísticos e abordagens exatas, os quais são denominados de \textit{Matheuristics} (\citeonline{Puchinger2005}, \citeonline{vos2010} e \citeonline{Jourdan2009}), estas abordagens devem ser investigadas neste projeto. 
+
+
+
+\section{Objetivos e Justificativas}\label{sec:04}
+
+Neste doutorado pretende-se investigar heurísticas híbridas para o problema de produção e distribuição. Este problema integra problemas de difícil solução e carece de bons métodos para obtenção de soluções de qualidade e em tempo computacional razoável, principalmente para extensões do problema ainda não abordadas na literatura.  Métodos heurísticos são bastante investigados na literatura e existem várias maneiras de aplicar tais métodos. Neste projeto, aspiramos reunir  estratégias de resolução baseadas na formulação matemática e meta-heurísticas e aplicá-las ao problema em estudo. Artigos recentes  serão investigados.  No final do doutorado, esperamos propor um método heurístico competitivo para o problema em estudo. 
+
+\section{Metodologia}\label{sec:05}
+
+Inicialmente, será realizada uma revisão da literatura visando trabalhos relacionados. A seguir, as abordagens de solução serão implementadas e testadas utilizando dados disponíveis na literatura.
+
+Para o desenvolvimento da pesquisa, a aluna utilizará a infraestrutura disponível no Laboratório de Otimização do ICMC-USP (computadores, \textit{softwares} e etc).  A linguagem de desenvolvimento do projeto será o Python e utilizará o software  de otimização Gurobi. 
+
+A seguir, descrevem-se as atividades detalhadas que serão realizadas para se alcançar os objetivos propostos neste projeto. 
+
+\begin{enumerate}
+\item Estudar o problema de produção e distribuição considerando formulações matemáticas e características como as apresentadas em \citeonline{jansdistribuicao}, \citeonline{Armentano20111199}, \citeonline{FumeroV99}, \citeonline{luizfernando2021} e  \citeonline{MANOUSAKIS2021} e buscar outras referências bibliográficas sobre os mesmos;
+\item	Levantamento de dados sobre estes problemas, abordagens e melhores resultados;
+\item Extensão das abordagens estudadas para o problema alvo do presente projeto e implementação dos métodos propostos;
+\item	Testes computacionais e análise dos resultados;
+\item Elaboração de artigos de divulgação científica sobre os mesmos.
+\end{enumerate}
+
+%Para o desenvolvimento deste projeto serão necessários recursos bibliográficos que estão disponíveis na biblioteca do ICMC e nos periódicos \textit{on-line}, microcomputador, o \textit{softare} CPLEX e Gurobi e compilador da linguagem C/C++ bem como o Python, todos disponíveis no laboratório do grupo de otimização. Além disso, para o desenvolvimento do projeto, contará com o apoio do grupo de otimização formado pelos professores Dra. Franklina Maria Bragion de Tolelo, Dr. Eduardo Costa e Dra. Marina Andretta.  No final deste trabalho esperamos ter obtido resultados que possa trazer benefícios à comunidade científica e, esperamos submeter trabalhos para congressos e periódicos da área.
+No final deste trabalho é esperado obter resultados que possam trazer benefícios à comunidade científica e, além disso, submeter trabalhos para congressos e periódicos da área.
+
+\section{Cronograma de Atividades}\label{sec:06}
+
+A seguir, apresenta-se o cronograma para o desenvolvimento das atividades relativas ao projeto em questão. Este cronograma tem como finalidade assegurar o bom desenvolvimento e acompanhamento do projeto. As atividades propostas estão divididas da seguinte maneira:
+
+\begin{itemize}
+\item A1. Obtenção dos créditos em disciplinas. 
+\item A2.	Aprofundamento do levantamento bibliográfico relativo ao problema de produção e distribuição e suas características.
+\item A3:	Estudo de modelos matemáticos. Estudo dos métodos heurísticos que tratam o problema. 
+\item A4: Elaboração da monografia de qualificação com as propostas do projeto e revisão bibliográfica. 
+\item A5:	Extensão das abordagens selecionadas.
+\item A6:	Implementar das abordagens desenvolvidas para os problemas e fazer os experimentos computacionais.  
+\item A7:	Os resultados obtidos serão analisados e reportados em forma de artigos para revistas/congressos ou  relatórios técnicos. 
+\item A8: Elaboração da Tese.
+\item A9: Defesa da Tese.
+\end{itemize}
+
+Na Tabela ~\ref{tabcronograma}, um cronograma das atividades é apresentado com previsão de início em agosto de 2023 e finalização em julho de 2026.  
+
+% Table generated by Excel2LaTeX from sheet 'Plan1'
+\begin{table}[h]\footnotesize \centering
+  \centering
+ % \caption{Cronograma}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    %\toprule
+      -   & 2026/1 & 2026/2 & 2027/1 & 2027/2 & 2028/1 & 2028/2 & 2029/1 & 2029/2 \\
+      \hline 
+      A1  &        &        &        &        &        &        &         &       \\
+      \hline
+    \end{tabular}%
+\caption{Cronograma de atividades.}
+  \label{tabcronograma}%
+\end{table}%
+
+\renewcommand{\refname}{Referências Bibliográficas}
+\bibliographystyle{cfg/abnt-alf}
+\bibliography{cfg/abnt-options,bib/ref}
+
+\end{document}
+
